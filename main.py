@@ -1,4 +1,3 @@
-
 def calc(a, b, operator):
   match operator:
     case "+":
@@ -9,21 +8,30 @@ def calc(a, b, operator):
         result = a * b
     case "/":
         if b == 0:
-          result = "ERROR:1"
+          raise ZeroDivisionError
         else:
           result = a/b
     case _:
-        result = "ERROR:2"
+        raise ValueError
   return result
-      
-a = int(input())
-b = int(input())
-operator = input()
-result = calc(a, b, operator)
-match result:
-  case "ERROR:1":
+
+def main():
+  try:
+    a = float(input())
+    b = float(input())
+  except:
+    print("both a and b are supposed to be numbers")
+    return 1
+  
+  operator = input()
+  try:
+    print(calc(a, b, operator))
+  except ZeroDivisionError:
     print("Division by zero is not allowed in here")
-  case "ERROR:2":
-    print("Unknown query")
-  case _:
-    print(result)
+    return 2
+  except ValueError:
+      print("Unknown query")
+      return 3
+  return 0
+
+main()
