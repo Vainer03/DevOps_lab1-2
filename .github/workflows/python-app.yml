@@ -1,0 +1,43 @@
+name: I_am_not_good_at_naming_things
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:  
+  build_os_matrix:
+    name: build the matrix of OS and versions
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest, self-hosted]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          
+  send_to_telegram:
+    name: send notification to telegram
+    needs: build_os_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            Repository: ${{ github.repository }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
