@@ -36,6 +36,8 @@ jobs:
           password: ${{ env.DOCKERHUB_PASSWORD }}
       - name: Build image
         run: docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${GITHUB_REF:11} -f Dockerfile .
+      - name: Push image to docker
+        run: docker push ${{ env.DOCKERHUB_USERNAME }}/${{ env.DOCKER_REPO_NAME }}:${GITHUB_REF:11}
           
   send_to_telegram:
     name: send notification to telegram
