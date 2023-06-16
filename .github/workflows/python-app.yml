@@ -28,7 +28,6 @@ jobs:
           
       - name: Analyzing the code
         run: |
-          New-Item kowalski_analysis.txt
           pip install pycodestyle
           pycodestyle main.py > kowalski_analysis.txt
       
