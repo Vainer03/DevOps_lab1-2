@@ -34,7 +34,6 @@ jobs:
       - name: create success file
         if: success()
         run: |
-          New-Item kowalski_analysis.txt
           "OK" > kowalski_analysis.txt
       
       - name: Upload the results of the analysis
