@@ -50,14 +50,20 @@ jobs:
           
   send_to_telegram:
     name: send notification to telegram
+    if: always()
+    
     needs: build_os_matrix
     runs-on: ubuntu-latest
     steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.1.1
+        
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: kowalski_analysis.txt
           message: |
             ${{ github.actor }} created commit:
             Commit message: ${{ github.event.commits[0].message }}
