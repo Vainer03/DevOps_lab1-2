@@ -12,7 +12,7 @@ jobs:
     name: build the matrix of OS and versions
     strategy:
       matrix:
-        os: [ubuntu-latest, self-hosted]
+        os: [ubuntu-latest]
         
     runs-on: ${{ matrix.os }}
     env:
